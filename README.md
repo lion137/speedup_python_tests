@@ -1,12 +1,12 @@
 
-Compilation of C++ part in file ```test.sh```, works under linux Ubuntu/WLS
-Python part works with Python3.9, installation:
-```pip install -r requirements.txt```
-Run tests:
-```pytest tests.py```
-Performance:
-```python performance_m.py```
-Outcome:
+Compilation of C++ part in file ```test.sh```, works under linux Ubuntu/WLS.    
+Python part works with Python3.9, installation:    
+```pip install -r requirements.txt```    
+Run tests:    
+```pytest tests.py```    
+Performance:     
+```python performance_m.py```     
+Outcome:      
 ```
 Time taken by C++ bisection program: 0.1 ms
 Bisection times:
