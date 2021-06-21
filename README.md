@@ -15,4 +15,5 @@ Cython time: 0.6177973747253418
 Numba time: 0.8303954601287842
 Fibonacci times
 Fibonacci Python time: 4.473325967788696
+Fibonacci Numba time: 0.05297398567199707
 ```
