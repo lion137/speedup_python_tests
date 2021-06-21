@@ -20,3 +20,5 @@ There is no a Fibonacci Cython due to the big integers involved.
 Bisection does at most ```30``` iterations, Fibonacci does more and there is seen a bigger performance improvement.
 Acctually, the top perfomer is ```pypy```, bisection time: ```0.204``` secs.    
 Could be obtained here: https://www.pypy.org/download.html
+
+
