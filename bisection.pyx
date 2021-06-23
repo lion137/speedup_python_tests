@@ -20,7 +20,20 @@ cpdef tuple get_interval(cython.float left, cython.float right):
             val_right = f(right)
     return left, right
 
-cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon, cython.int max_iter=50):
+cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon):
+    # interval finding part
+    val_left = f(left)
+    val_right = f(right)
+    for j in range(50):
+        if val_left * val_right < 0.0: 
+            break
+        if abs(val_left) < abs(val_right):
+            left += 1.5 * (left - right)
+            val_left = f(left)
+        else:
+            right += 1.5 * (right - left)
+            val_right = f(right)
+    # end
     cython.float: dx
     cython.float: g
     cython.float: fmid
@@ -34,7 +47,7 @@ cpdef float bisection_cython(cython.float left, cython.float right, cython.float
     else:
         dx = left - right
         rtb = right
-    for j in range(max_iter):
+    for j in range(50):
         dx *= 0.5
         xmid = rtb + dx
         fmid = f(xmid)

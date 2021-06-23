@@ -25,10 +25,8 @@ def main():
     print(f"Python time: {en - st}")
 
     bisection_cython = bs.bisection_cython
-    get_interval = bs.get_interval
     st = time.time()
     for _ in range(1000000):
-        left, right = get_interval(0.5, 0.7)
         bisection_cython(left, right, accuracy)
     en = time.time()
 
