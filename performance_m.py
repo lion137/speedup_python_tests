@@ -1,8 +1,9 @@
 import time
-
+import ctypes
 import bisection as bs
 import bisection_python as bsp
 import fibo as fb
+import c_types.bisection_ctype as bc
 
 
 def f(x):
@@ -23,23 +24,42 @@ def main():
 
     print(f"Python time: {en - st}")
 
+    bisection_cython = bs.bisection_cython
+    get_interval = bs.get_interval
     st = time.time()
     for _ in range(1000000):
-        left, right = bs.get_interval(0.5, 0.7)
-        bs.bisection_cython(left, right, epsilon=accuracy)
+        left, right = get_interval(0.5, 0.7)
+        bisection_cython(left, right, accuracy)
     en = time.time()
 
     print(f"Cython time: {en - st}")
 
+    bisection_numba = bsp.bisection_python_numba
     st = time.time()
     for _ in range(1000000):
         left, right = bsp.get_interval_numba(0.5, 0.7)
-        bsp.bisection_python_numba(left, right, epsilon=accuracy)
+        bsp.bisection_python_numba(left, right, accuracy)
     en = time.time()
 
     print(f"Numba time: {en - st}")
 
+    x1 = ctypes.c_float(0.5)
+    x2 = ctypes.c_float(0.7)
+    x1_ptr = ctypes.pointer(x1)
+    x2_ptr = ctypes.pointer(x2)
+    out = bc.get_interval(x1_ptr, x2_ptr)
+    accuracy = ctypes.c_float(0.000001 * (abs(x1.value) + abs(x2.value)) / 2)
+    st = time.time()
+    get_interval = bc.get_interval
+    bisection_root = bc.bisection_root
+    for _ in range(1000000):
+        get_interval(x1_ptr, x2_ptr)
+        bisection_root(0.5, 1.7, accuracy)
+    en = time.time()
+    print(f"C extensions time: {en - st} sec")
+    
     print(f"Fibonacci times")
+
     st = time.time()
     for n in range(10000):
         fb.fibonacci(n)
