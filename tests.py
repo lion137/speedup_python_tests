@@ -1,7 +1,6 @@
 import bisection as bs
 import bisection_python as bsp
 
-
 def test_get_interval_python():
     left = 0.5
     right = 0.7
