@@ -7,19 +7,19 @@ Performance:
 ```python performance_m.py```     
 Outcome:      
 ```
-Time taken by C++ program: 100 ms
+Time taken by C++ program: 0.1 sec
 Bisection times:
-Python time: 5.384427070617676
-Cython time: 0.6508324146270752
-Numba time: 1.0673410892486572
-C extensions times: 1.3348870277404785 sec
+Python time: 4.196092367172241
+Cython time: 0.4356851577758789
+Numba time: 0.7862272262573242
+C extensions time: 0.46351170539855957 sec
 Fibonacci times
-Fibonacci Python time: 5.962206125259399
-Fibonacci Numba time: 0.06793999671936035
+Fibonacci Python time: 4.440826177597046
+Fibonacci Numba time: 0.05439305305480957
 ```
 There is no a Fibonacci Cython due to the big integers involved.        
-Bisection does at most ```30``` iterations, Fibonacci does more and there is seen a bigger performance improvement.
-Acctually, the top perfomer is ```pypy```, bisection time: ```0.204``` secs.    
-Could be obtained here: https://www.pypy.org/download.html
+Bisection does at most ```30``` iterations, Fibonacci does more and there is seen a bigger performance improvement.     
+Acctually, the top perfomer is ```pypy```, bisection time: ```0.204``` secs; could be obtained here: https://www.pypy.org/download.html
+
 
 

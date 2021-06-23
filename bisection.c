@@ -831,19 +831,6 @@ static const char *__pyx_f[] = {
 };
 
 /*--- Type declarations ---*/
-struct __pyx_opt_args_9bisection_bisection_cython;
-
-/* "bisection.pyx":23
- *     return left, right
- * 
- * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon, cython.int max_iter=50):             # <<<<<<<<<<<<<<
- *     cython.float: dx
- *     cython.float: g
- */
-struct __pyx_opt_args_9bisection_bisection_cython {
-  int __pyx_n;
-  int max_iter;
-};
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -930,6 +917,17 @@ static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_n
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
+
+/* py_abs.proto */
+#if CYTHON_USE_PYLONG_INTERNALS
+static PyObject *__Pyx_PyLong_AbsNeg(PyObject *num);
+#define __Pyx_PyNumber_Absolute(x)\
+    ((likely(PyLong_CheckExact(x))) ?\
+         (likely(Py_SIZE(x) >= 0) ? (Py_INCREF(x), (x)) : __Pyx_PyLong_AbsNeg(x)) :\
+         PyNumber_Absolute(x))
+#else
+#define __Pyx_PyNumber_Absolute(x)  PyNumber_Absolute(x)
+#endif
 
 /* PyFloatBinop.proto */
 #if !CYTHON_COMPILING_IN_PYPY
@@ -1048,16 +1046,13 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 #endif
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
-
-/* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1084,7 +1079,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'bisection' */
 static PyObject *__pyx_f_9bisection_f(float, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_9bisection_get_interval(float, float, int __pyx_skip_dispatch); /*proto*/
-static float __pyx_f_9bisection_bisection_cython(float, float, float, int __pyx_skip_dispatch, struct __pyx_opt_args_9bisection_bisection_cython *__pyx_optional_args); /*proto*/
+static float __pyx_f_9bisection_bisection_cython(float, float, float, int __pyx_skip_dispatch); /*proto*/
 #define __Pyx_MODULE_NAME "bisection"
 extern int __pyx_module_is_main_bisection;
 int __pyx_module_is_main_bisection = 0;
@@ -1098,7 +1093,6 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_right[] = "right";
 static const char __pyx_k_epsilon[] = "epsilon";
-static const char __pyx_k_max_iter[] = "max_iter";
 static const char __pyx_k_To_many_iterations[] = "To many iterations";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_kp_s_To_many_iterations;
@@ -1106,14 +1100,13 @@ static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_epsilon;
 static PyObject *__pyx_n_s_left;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_max_iter;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_right;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_pf_9bisection_f(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x); /* proto */
 static PyObject *__pyx_pf_9bisection_2get_interval(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_left, float __pyx_v_right); /* proto */
-static PyObject *__pyx_pf_9bisection_4bisection_cython(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon, int __pyx_v_max_iter); /* proto */
+static PyObject *__pyx_pf_9bisection_4bisection_cython(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon); /* proto */
 static PyObject *__pyx_float_0_0;
 static PyObject *__pyx_tuple_;
 /* Late includes */
@@ -1399,7 +1392,7 @@ static PyObject *__pyx_f_9bisection_get_interval(float __pyx_v_left, float __pyx
  *             val_right = f(right)
  *     return left, right             # <<<<<<<<<<<<<<
  * 
- * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon, cython.int max_iter=50):
+ * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_6 = PyFloat_FromDouble(__pyx_v_left); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 21, __pyx_L1_error)
@@ -1532,75 +1525,213 @@ static PyObject *__pyx_pf_9bisection_2get_interval(CYTHON_UNUSED PyObject *__pyx
 /* "bisection.pyx":23
  *     return left, right
  * 
- * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon, cython.int max_iter=50):             # <<<<<<<<<<<<<<
- *     cython.float: dx
- *     cython.float: g
+ * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon):             # <<<<<<<<<<<<<<
+ *     # interval finding part
+ *     val_left = f(left)
  */
 
 static PyObject *__pyx_pw_9bisection_5bisection_cython(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_9bisection_bisection_cython *__pyx_optional_args) {
-  int __pyx_v_max_iter = ((int)50);
+static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  PyObject *__pyx_v_val_left = NULL;
+  PyObject *__pyx_v_val_right = NULL;
+  CYTHON_UNUSED long __pyx_v_j;
   PyObject *__pyx_v_g = NULL;
   PyObject *__pyx_v_fmid = NULL;
   double __pyx_v_dx;
   double __pyx_v_rtb;
-  CYTHON_UNUSED int __pyx_v_j;
   double __pyx_v_xmid;
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  int __pyx_t_3;
+  long __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  int __pyx_t_5;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("bisection_cython", 0);
-  if (__pyx_optional_args) {
-    if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_max_iter = __pyx_optional_args->max_iter;
-    }
-  }
 
-  /* "bisection.pyx":29
+  /* "bisection.pyx":25
+ * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon):
+ *     # interval finding part
+ *     val_left = f(left)             # <<<<<<<<<<<<<<
+ *     val_right = f(right)
+ *     for j in range(50):
+ */
+  __pyx_t_1 = __pyx_f_9bisection_f(__pyx_v_left, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_val_left = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "bisection.pyx":26
+ *     # interval finding part
+ *     val_left = f(left)
+ *     val_right = f(right)             # <<<<<<<<<<<<<<
+ *     for j in range(50):
+ *         if val_left * val_right < 0.0:
+ */
+  __pyx_t_1 = __pyx_f_9bisection_f(__pyx_v_right, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_val_right = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "bisection.pyx":27
+ *     val_left = f(left)
+ *     val_right = f(right)
+ *     for j in range(50):             # <<<<<<<<<<<<<<
+ *         if val_left * val_right < 0.0:
+ *             break
+ */
+  for (__pyx_t_2 = 0; __pyx_t_2 < 50; __pyx_t_2+=1) {
+    __pyx_v_j = __pyx_t_2;
+
+    /* "bisection.pyx":28
+ *     val_right = f(right)
+ *     for j in range(50):
+ *         if val_left * val_right < 0.0:             # <<<<<<<<<<<<<<
+ *             break
+ *         if abs(val_left) < abs(val_right):
+ */
+    __pyx_t_1 = PyNumber_Multiply(__pyx_v_val_left, __pyx_v_val_right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_float_0_0, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (__pyx_t_4) {
+
+      /* "bisection.pyx":29
+ *     for j in range(50):
+ *         if val_left * val_right < 0.0:
+ *             break             # <<<<<<<<<<<<<<
+ *         if abs(val_left) < abs(val_right):
+ *             left += 1.5 * (left - right)
+ */
+      goto __pyx_L4_break;
+
+      /* "bisection.pyx":28
+ *     val_right = f(right)
+ *     for j in range(50):
+ *         if val_left * val_right < 0.0:             # <<<<<<<<<<<<<<
+ *             break
+ *         if abs(val_left) < abs(val_right):
+ */
+    }
+
+    /* "bisection.pyx":30
+ *         if val_left * val_right < 0.0:
+ *             break
+ *         if abs(val_left) < abs(val_right):             # <<<<<<<<<<<<<<
+ *             left += 1.5 * (left - right)
+ *             val_left = f(left)
+ */
+    __pyx_t_3 = __Pyx_PyNumber_Absolute(__pyx_v_val_left); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = __Pyx_PyNumber_Absolute(__pyx_v_val_right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_1, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (__pyx_t_4) {
+
+      /* "bisection.pyx":31
+ *             break
+ *         if abs(val_left) < abs(val_right):
+ *             left += 1.5 * (left - right)             # <<<<<<<<<<<<<<
+ *             val_left = f(left)
+ *         else:
+ */
+      __pyx_v_left = (__pyx_v_left + (1.5 * (__pyx_v_left - __pyx_v_right)));
+
+      /* "bisection.pyx":32
+ *         if abs(val_left) < abs(val_right):
+ *             left += 1.5 * (left - right)
+ *             val_left = f(left)             # <<<<<<<<<<<<<<
+ *         else:
+ *             right += 1.5 * (right - left)
+ */
+      __pyx_t_5 = __pyx_f_9bisection_f(__pyx_v_left, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 32, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF_SET(__pyx_v_val_left, __pyx_t_5);
+      __pyx_t_5 = 0;
+
+      /* "bisection.pyx":30
+ *         if val_left * val_right < 0.0:
+ *             break
+ *         if abs(val_left) < abs(val_right):             # <<<<<<<<<<<<<<
+ *             left += 1.5 * (left - right)
+ *             val_left = f(left)
+ */
+      goto __pyx_L6;
+    }
+
+    /* "bisection.pyx":34
+ *             val_left = f(left)
+ *         else:
+ *             right += 1.5 * (right - left)             # <<<<<<<<<<<<<<
+ *             val_right = f(right)
+ *     # end
+ */
+    /*else*/ {
+      __pyx_v_right = (__pyx_v_right + (1.5 * (__pyx_v_right - __pyx_v_left)));
+
+      /* "bisection.pyx":35
+ *         else:
+ *             right += 1.5 * (right - left)
+ *             val_right = f(right)             # <<<<<<<<<<<<<<
+ *     # end
+ *     cython.float: dx
+ */
+      __pyx_t_5 = __pyx_f_9bisection_f(__pyx_v_right, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF_SET(__pyx_v_val_right, __pyx_t_5);
+      __pyx_t_5 = 0;
+    }
+    __pyx_L6:;
+  }
+  __pyx_L4_break:;
+
+  /* "bisection.pyx":42
  *     cython.float: xmid
  *     cython.float: rtb
  *     g = f(left)             # <<<<<<<<<<<<<<
  *     fmid = f(right)
  *     if g < 0.0:
  */
-  __pyx_t_1 = __pyx_f_9bisection_f(__pyx_v_left, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_g = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_5 = __pyx_f_9bisection_f(__pyx_v_left, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_v_g = __pyx_t_5;
+  __pyx_t_5 = 0;
 
-  /* "bisection.pyx":30
+  /* "bisection.pyx":43
  *     cython.float: rtb
  *     g = f(left)
  *     fmid = f(right)             # <<<<<<<<<<<<<<
  *     if g < 0.0:
  *         dx = right - left
  */
-  __pyx_t_1 = __pyx_f_9bisection_f(__pyx_v_right, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_fmid = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_5 = __pyx_f_9bisection_f(__pyx_v_right, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_v_fmid = __pyx_t_5;
+  __pyx_t_5 = 0;
 
-  /* "bisection.pyx":31
+  /* "bisection.pyx":44
  *     g = f(left)
  *     fmid = f(right)
  *     if g < 0.0:             # <<<<<<<<<<<<<<
  *         dx = right - left
  *         rtb = left
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_g, __pyx_float_0_0, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_t_2) {
+  __pyx_t_5 = PyObject_RichCompare(__pyx_v_g, __pyx_float_0_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (__pyx_t_4) {
 
-    /* "bisection.pyx":32
+    /* "bisection.pyx":45
  *     fmid = f(right)
  *     if g < 0.0:
  *         dx = right - left             # <<<<<<<<<<<<<<
@@ -1609,7 +1740,7 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
  */
     __pyx_v_dx = (__pyx_v_right - __pyx_v_left);
 
-    /* "bisection.pyx":33
+    /* "bisection.pyx":46
  *     if g < 0.0:
  *         dx = right - left
  *         rtb = left             # <<<<<<<<<<<<<<
@@ -1618,60 +1749,58 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
  */
     __pyx_v_rtb = __pyx_v_left;
 
-    /* "bisection.pyx":31
+    /* "bisection.pyx":44
  *     g = f(left)
  *     fmid = f(right)
  *     if g < 0.0:             # <<<<<<<<<<<<<<
  *         dx = right - left
  *         rtb = left
  */
-    goto __pyx_L3;
+    goto __pyx_L7;
   }
 
-  /* "bisection.pyx":35
+  /* "bisection.pyx":48
  *         rtb = left
  *     else:
  *         dx = left - right             # <<<<<<<<<<<<<<
  *         rtb = right
- *     for j in range(max_iter):
+ *     for j in range(50):
  */
   /*else*/ {
     __pyx_v_dx = (__pyx_v_left - __pyx_v_right);
 
-    /* "bisection.pyx":36
+    /* "bisection.pyx":49
  *     else:
  *         dx = left - right
  *         rtb = right             # <<<<<<<<<<<<<<
- *     for j in range(max_iter):
+ *     for j in range(50):
  *         dx *= 0.5
  */
     __pyx_v_rtb = __pyx_v_right;
   }
-  __pyx_L3:;
+  __pyx_L7:;
 
-  /* "bisection.pyx":37
+  /* "bisection.pyx":50
  *         dx = left - right
  *         rtb = right
- *     for j in range(max_iter):             # <<<<<<<<<<<<<<
+ *     for j in range(50):             # <<<<<<<<<<<<<<
  *         dx *= 0.5
  *         xmid = rtb + dx
  */
-  __pyx_t_3 = __pyx_v_max_iter;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_j = __pyx_t_5;
+  for (__pyx_t_2 = 0; __pyx_t_2 < 50; __pyx_t_2+=1) {
+    __pyx_v_j = __pyx_t_2;
 
-    /* "bisection.pyx":38
+    /* "bisection.pyx":51
  *         rtb = right
- *     for j in range(max_iter):
+ *     for j in range(50):
  *         dx *= 0.5             # <<<<<<<<<<<<<<
  *         xmid = rtb + dx
  *         fmid = f(xmid)
  */
     __pyx_v_dx = (__pyx_v_dx * 0.5);
 
-    /* "bisection.pyx":39
- *     for j in range(max_iter):
+    /* "bisection.pyx":52
+ *     for j in range(50):
  *         dx *= 0.5
  *         xmid = rtb + dx             # <<<<<<<<<<<<<<
  *         fmid = f(xmid)
@@ -1679,31 +1808,31 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
  */
     __pyx_v_xmid = (__pyx_v_rtb + __pyx_v_dx);
 
-    /* "bisection.pyx":40
+    /* "bisection.pyx":53
  *         dx *= 0.5
  *         xmid = rtb + dx
  *         fmid = f(xmid)             # <<<<<<<<<<<<<<
  *         if fmid < 0.0:
  *             rtb = xmid
  */
-    __pyx_t_1 = __pyx_f_9bisection_f(__pyx_v_xmid, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF_SET(__pyx_v_fmid, __pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_t_5 = __pyx_f_9bisection_f(__pyx_v_xmid, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_fmid, __pyx_t_5);
+    __pyx_t_5 = 0;
 
-    /* "bisection.pyx":41
+    /* "bisection.pyx":54
  *         xmid = rtb + dx
  *         fmid = f(xmid)
  *         if fmid < 0.0:             # <<<<<<<<<<<<<<
  *             rtb = xmid
  *         if abs(dx) < epsilon or fmid == 0.0:
  */
-    __pyx_t_1 = PyObject_RichCompare(__pyx_v_fmid, __pyx_float_0_0, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__pyx_t_2) {
+    __pyx_t_5 = PyObject_RichCompare(__pyx_v_fmid, __pyx_float_0_0, Py_LT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (__pyx_t_4) {
 
-      /* "bisection.pyx":42
+      /* "bisection.pyx":55
  *         fmid = f(xmid)
  *         if fmid < 0.0:
  *             rtb = xmid             # <<<<<<<<<<<<<<
@@ -1712,7 +1841,7 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
  */
       __pyx_v_rtb = __pyx_v_xmid;
 
-      /* "bisection.pyx":41
+      /* "bisection.pyx":54
  *         xmid = rtb + dx
  *         fmid = f(xmid)
  *         if fmid < 0.0:             # <<<<<<<<<<<<<<
@@ -1721,7 +1850,7 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
  */
     }
 
-    /* "bisection.pyx":43
+    /* "bisection.pyx":56
  *         if fmid < 0.0:
  *             rtb = xmid
  *         if abs(dx) < epsilon or fmid == 0.0:             # <<<<<<<<<<<<<<
@@ -1731,18 +1860,18 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
     __pyx_t_6 = ((fabs(__pyx_v_dx) < __pyx_v_epsilon) != 0);
     if (!__pyx_t_6) {
     } else {
-      __pyx_t_2 = __pyx_t_6;
-      goto __pyx_L8_bool_binop_done;
+      __pyx_t_4 = __pyx_t_6;
+      goto __pyx_L12_bool_binop_done;
     }
-    __pyx_t_1 = __Pyx_PyFloat_EqObjC(__pyx_v_fmid, __pyx_float_0_0, 0.0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_2 = __pyx_t_6;
-    __pyx_L8_bool_binop_done:;
-    if (__pyx_t_2) {
+    __pyx_t_5 = __Pyx_PyFloat_EqObjC(__pyx_v_fmid, __pyx_float_0_0, 0.0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_4 = __pyx_t_6;
+    __pyx_L12_bool_binop_done:;
+    if (__pyx_t_4) {
 
-      /* "bisection.pyx":44
+      /* "bisection.pyx":57
  *             rtb = xmid
  *         if abs(dx) < epsilon or fmid == 0.0:
  *             return rtb             # <<<<<<<<<<<<<<
@@ -1751,7 +1880,7 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
       __pyx_r = __pyx_v_rtb;
       goto __pyx_L0;
 
-      /* "bisection.pyx":43
+      /* "bisection.pyx":56
  *         if fmid < 0.0:
  *             rtb = xmid
  *         if abs(dx) < epsilon or fmid == 0.0:             # <<<<<<<<<<<<<<
@@ -1761,31 +1890,35 @@ static float __pyx_f_9bisection_bisection_cython(float __pyx_v_left, float __pyx
     }
   }
 
-  /* "bisection.pyx":45
+  /* "bisection.pyx":58
  *         if abs(dx) < epsilon or fmid == 0.0:
  *             return rtb
  *     raise Exception("To many iterations")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple_, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_Raise(__pyx_t_5, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __PYX_ERR(0, 58, __pyx_L1_error)
 
   /* "bisection.pyx":23
  *     return left, right
  * 
- * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon, cython.int max_iter=50):             # <<<<<<<<<<<<<<
- *     cython.float: dx
- *     cython.float: g
+ * cpdef float bisection_cython(cython.float left, cython.float right, cython.float epsilon):             # <<<<<<<<<<<<<<
+ *     # interval finding part
+ *     val_left = f(left)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_WriteUnraisable("bisection.bisection_cython", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_val_left);
+  __Pyx_XDECREF(__pyx_v_val_right);
   __Pyx_XDECREF(__pyx_v_g);
   __Pyx_XDECREF(__pyx_v_fmid);
   __Pyx_RefNannyFinishContext();
@@ -1798,7 +1931,6 @@ static PyObject *__pyx_pw_9bisection_5bisection_cython(PyObject *__pyx_self, PyO
   float __pyx_v_left;
   float __pyx_v_right;
   float __pyx_v_epsilon;
-  int __pyx_v_max_iter;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1806,14 +1938,12 @@ static PyObject *__pyx_pw_9bisection_5bisection_cython(PyObject *__pyx_self, PyO
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("bisection_cython (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_left,&__pyx_n_s_right,&__pyx_n_s_epsilon,&__pyx_n_s_max_iter,0};
-    PyObject* values[4] = {0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_left,&__pyx_n_s_right,&__pyx_n_s_epsilon,0};
+    PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -1832,82 +1962,62 @@ static PyObject *__pyx_pw_9bisection_5bisection_cython(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_right)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bisection_cython", 0, 3, 4, 1); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bisection_cython", 1, 3, 3, 1); __PYX_ERR(0, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_epsilon)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bisection_cython", 0, 3, 4, 2); __PYX_ERR(0, 23, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  3:
-        if (kw_args > 0) {
-          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_max_iter);
-          if (value) { values[3] = value; kw_args--; }
+          __Pyx_RaiseArgtupleInvalid("bisection_cython", 1, 3, 3, 2); __PYX_ERR(0, 23, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bisection_cython") < 0)) __PYX_ERR(0, 23, __pyx_L3_error)
       }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+      goto __pyx_L5_argtuple_error;
     } else {
-      switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        CYTHON_FALLTHROUGH;
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        break;
-        default: goto __pyx_L5_argtuple_error;
-      }
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_left = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_left == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
     __pyx_v_right = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_right == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
     __pyx_v_epsilon = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_epsilon == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
-    if (values[3]) {
-      __pyx_v_max_iter = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_max_iter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L3_error)
-    } else {
-      __pyx_v_max_iter = ((int)50);
-    }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bisection_cython", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bisection_cython", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("bisection.bisection_cython", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9bisection_4bisection_cython(__pyx_self, __pyx_v_left, __pyx_v_right, __pyx_v_epsilon, __pyx_v_max_iter);
+  __pyx_r = __pyx_pf_9bisection_4bisection_cython(__pyx_self, __pyx_v_left, __pyx_v_right, __pyx_v_epsilon);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9bisection_4bisection_cython(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon, int __pyx_v_max_iter) {
+static PyObject *__pyx_pf_9bisection_4bisection_cython(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_left, float __pyx_v_right, float __pyx_v_epsilon) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  float __pyx_t_1;
-  struct __pyx_opt_args_9bisection_bisection_cython __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("bisection_cython", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2.__pyx_n = 1;
-  __pyx_t_2.max_iter = __pyx_v_max_iter;
-  __pyx_t_1 = __pyx_f_9bisection_bisection_cython(__pyx_v_left, __pyx_v_right, __pyx_v_epsilon, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_9bisection_bisection_cython(__pyx_v_left, __pyx_v_right, __pyx_v_epsilon, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("bisection.bisection_cython", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -1970,7 +2080,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_epsilon, __pyx_k_epsilon, sizeof(__pyx_k_epsilon), 0, 0, 1, 1},
   {&__pyx_n_s_left, __pyx_k_left, sizeof(__pyx_k_left), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_max_iter, __pyx_k_max_iter, sizeof(__pyx_k_max_iter), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_right, __pyx_k_right, sizeof(__pyx_k_right), 0, 0, 1, 1},
@@ -1988,12 +2097,12 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "bisection.pyx":45
+  /* "bisection.pyx":58
  *         if abs(dx) < epsilon or fmid == 0.0:
  *             return rtb
  *     raise Exception("To many iterations")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_To_many_iterations); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_To_many_iterations); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
@@ -2498,6 +2607,26 @@ invalid_keyword:
 bad:
     return -1;
 }
+
+/* py_abs */
+#if CYTHON_USE_PYLONG_INTERNALS
+static PyObject *__Pyx_PyLong_AbsNeg(PyObject *n) {
+    if (likely(Py_SIZE(n) == -1)) {
+        return PyLong_FromLong(((PyLongObject*)n)->ob_digit[0]);
+    }
+#if CYTHON_COMPILING_IN_CPYTHON
+    {
+        PyObject *copy = _PyLong_Copy((PyLongObject*)n);
+        if (likely(copy)) {
+            __Pyx_SET_SIZE(copy, -Py_SIZE(copy));
+        }
+        return copy;
+    }
+#else
+    return PyNumber_Negative(n);
+#endif
+}
+#endif
 
 /* PyFloatBinop */
 #if !CYTHON_COMPILING_IN_PYPY
@@ -3080,202 +3209,6 @@ bad:
     }
 
 /* CIntFromPy */
-  static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(int) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(int, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (int) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (int) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(int, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 2 * PyLong_SHIFT) {
-                            return (int) (((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 3 * PyLong_SHIFT) {
-                            return (int) (((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) >= 4 * PyLong_SHIFT) {
-                            return (int) (((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (int) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(int) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (int) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(int,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(int) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                            return (int) ((((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                            return (int) ((((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
-                            return (int) (((int)-1)*(((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
-                            return (int) ((((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(int) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(int, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            int val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (int) -1;
-        }
-    } else {
-        int val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (int) -1;
-        val = __Pyx_PyInt_As_int(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to int");
-    return (int) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to int");
-    return (int) -1;
-}
-
-/* CIntFromPy */
   static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
@@ -3472,44 +3405,6 @@ raise_neg_overflow:
 }
 
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
@@ -3545,6 +3440,202 @@ raise_neg_overflow:
         return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
+}
+
+/* CIntFromPy */
+  static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const int neg_one = (int) -1, const_zero = (int) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(int) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(int, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (int) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (int) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(int, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 2 * PyLong_SHIFT) {
+                            return (int) (((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 3 * PyLong_SHIFT) {
+                            return (int) (((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) >= 4 * PyLong_SHIFT) {
+                            return (int) (((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (int) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(int) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (int) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(int,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(int) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(int) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                            return (int) ((((((int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(int) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(int) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                            return (int) ((((((((int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(int) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
+                            return (int) (((int)-1)*(((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(int) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(int) - 1 > 4 * PyLong_SHIFT) {
+                            return (int) ((((((((((int)digits[3]) << PyLong_SHIFT) | (int)digits[2]) << PyLong_SHIFT) | (int)digits[1]) << PyLong_SHIFT) | (int)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(int) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(int, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            int val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (int) -1;
+        }
+    } else {
+        int val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (int) -1;
+        val = __Pyx_PyInt_As_int(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to int");
+    return (int) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to int");
+    return (int) -1;
 }
 
 /* FastTypeChecks */
