@@ -34,7 +34,7 @@ bisection_root = function_wrap(
     libc,
     "bisection_root",
     ctypes.c_float,
-    [ctypes.c_float, ctypes.c_float, ctypes.c_float],
+    [ctypes.c_float, ctypes.c_float],
 )
 
 
@@ -49,7 +49,7 @@ def main():
 
     accuracy = ctypes.c_float(0.000001 * (abs(x1.value) + abs(x2.value)) / 2)
 
-    print(bisection_root(0.5, 1.7, accuracy))
+    print(bisection_root(0.5, 1.7))
 
 
 if __name__ == "__main__":

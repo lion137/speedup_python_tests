@@ -53,8 +53,7 @@ def main():
     get_interval = bc.get_interval
     bisection_root = bc.bisection_root
     for _ in range(1000000):
-        get_interval(x1_ptr, x2_ptr)
-        bisection_root(0.5, 1.7, accuracy)
+        bisection_root(0.5, 1.7)
     en = time.time()
     print(f"C extensions time: {en - st} sec")
     

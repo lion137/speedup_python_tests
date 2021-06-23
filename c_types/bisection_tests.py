@@ -30,7 +30,7 @@ bisection_root = bp.function_wrap(
     libc,
     "bisection_root",
     ctypes.c_float,
-    [ctypes.c_float, ctypes.c_float, ctypes.c_float],
+    [ctypes.c_float, ctypes.c_float],
 )
 
 
@@ -56,7 +56,7 @@ def test_bisection_root():
     x2_ptr = ctypes.pointer(x2)
     get_interval(x1_ptr, x2_ptr)
     accuracy = ctypes.c_float(0.000001 * (abs(x1.value) + abs(x2.value)) / 2)
-    root = bisection_root(x1, x2, accuracy)
+    root = bisection_root(x1, x2)
     assert bool(equal_float(root, 1.0, accuracy))
 
 

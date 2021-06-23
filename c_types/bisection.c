@@ -35,10 +35,11 @@ int get_interval(float* x1, float* x2)
     return 0;
 }
 
-float bisection_root(float left, float right, float epsilon)
+float bisection_root(float left, float right)
 {
     float dx, f, fmid, xmid, rtb;
-
+    get_interval(&left, &right);
+    float epsilon = 0.000001 * (fabs(left) + fabs(right)) / 2;
     f = fun(left);
     fmid = fun(right);
 
