@@ -70,12 +70,7 @@ def main():
 
 
     print(f"Monte Carlo times: ")
-    mcc = bs.monte_carlo_integral_cython
-    st = time.time()
-    for n in range(1000):
-        mcc(20000)
-    en = time.time()
-    print(f"Monte Carlo Cython time: {en - st}")
+
 
     mcn = bsp.monte_carlo_integral_numba
     st = time.time()
