@@ -21,12 +21,13 @@ Fibonacci Python time: 4.375149488449097
 Fibonacci Numba time: 0.050522804260253906
 Monte Carlo times:
 Monte Carlo Cython time: 5.285279035568237
-Monte Carlo Numba time: 0.8551747798919678
+Monte Carlo Numba time: 0.4553196430206299
 ```
 There is no a Fibonacci Cython due to the big integers involved.        
 Bisection does at most ```30``` iterations, Fibonacci does more and there is seen a bigger performance improvement.     
 ```pypy``` is best with bisection: ```0.204``` secs; could be obtained here: https://www.pypy.org/download.html    
-For that specific problem, (Monte Carlo) Numba's doing great, close to C++ with optimization.
+For that specific problem, (Monte Carlo) Numba's JIT doing great, better than C++ with optimization.
+
 
 
 

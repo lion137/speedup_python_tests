@@ -80,7 +80,7 @@ def main():
     mcn = bsp.monte_carlo_integral_numba
     st = time.time()
     for n in range(1000):
-        mcn(40000)
+        mcn(20000)
     en = time.time()
     print(f"Monte Carlo Numba time: {en - st}")
     

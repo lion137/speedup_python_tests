@@ -18,7 +18,7 @@ def test_bisection_python():
 
 
 def test_monte_carlo_integral_cython():
-    assert True
+    assert bsp.equal_float(bs.monte_carlo_integral_cython(20000), 0.696, 0.01)
 
 
 """
