@@ -1,5 +1,4 @@
 import cython
-import random
 import math
 
 cpdef f(cython.float x):
@@ -59,19 +58,3 @@ cpdef float bisection_cython(cython.float left, cython.float right, cython.float
             return rtb
     raise Exception("To many iterations")
 
-
-cpdef cython.float monte_carlo_integral_cython(int ntry):
-    cython.float: left 
-    cython.float: right 
-    cython.float: s_sum 
-    cython.float: range_int
-    left = 0
-    right = 5
-    s_sum = 0
-    range_int = right - left
-    for n in range(ntry):
-        cython.float: rand_sample 
-        rand_sample = random.uniform(0, 1)
-        rand_sample = left + range_int * rand_sample;
-        s_sum += (math.e ** (-rand_sample)) / (1 + (rand_sample - 1) * (rand_sample - 1))
-    return range_int * s_sum / ntry
