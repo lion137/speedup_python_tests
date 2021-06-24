@@ -17,6 +17,10 @@ def test_bisection_python():
     )
 
 
+def test_monte_carlo_integral_cython():
+    assert True
+
+
 """
 left, right = bsp.get_interval(0.5, 0.75)
 accuracy = 0.000001 * (abs(left) + abs(right)) / 2
