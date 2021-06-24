@@ -1,1 +1,0 @@
-get_interval looks ok

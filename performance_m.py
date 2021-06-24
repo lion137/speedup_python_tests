@@ -11,17 +11,18 @@ def f(x):
 
 
 def main():
-
     left, right = bsp.get_interval_numba(0.5, 0.7)
     accuracy = 0.000001 * (abs(left) + abs(right)) / 2  # for stability
-    print(f"Time taken by C++ program: 100 ms")
+    print(f"Time taken by C++ bisection: 100 ms")
+    print(f"Time taken by C++ bisection, (optimization on): 75 ms")
+    print(f"Time taken by C++ Monte Carlo: 1300 ms")
+    print(f"Time taken by C++ Monte Carlo, (optimization on): 560 ms")
     print(f"Bisection times: ")
     st = time.time()
     for _ in range(1000000):
         left, right = bsp.get_interval_numba(0.5, 0.7)
         bsp.bisection_python(left, right, epsilon=accuracy)
     en = time.time()
-
     print(f"Python time: {en - st}")
 
     bisection_cython = bs.bisection_cython
@@ -29,7 +30,6 @@ def main():
     for _ in range(1000000):
         bisection_cython(left, right, accuracy)
     en = time.time()
-
     print(f"Cython time: {en - st}")
 
     bisection_numba = bsp.bisection_python_numba
@@ -38,7 +38,6 @@ def main():
         left, right = bsp.get_interval_numba(0.5, 0.7)
         bsp.bisection_python_numba(left, right, accuracy)
     en = time.time()
-
     print(f"Numba time: {en - st}")
 
     x1 = ctypes.c_float(0.5)
@@ -61,15 +60,30 @@ def main():
     for n in range(10000):
         fb.fibonacci(n)
     en = time.time()
-
     print(f"Fibonacci Python time: {en - st}")
 
     st = time.time()
     for n in range(10000):
         fb.fibonacci_numba(n)
     en = time.time()
-
     print(f"Fibonacci Numba time: {en - st}")
+
+
+    print(f"Monte Carlo times: ")
+    mcc = bs.monte_carlo_integral_cython
+    st = time.time()
+    for n in range(1000):
+        mcc(20000)
+    en = time.time()
+    print(f"Monte Carlo Cython time: {en - st}")
+
+    mcn = bsp.monte_carlo_integral_numba
+    st = time.time()
+    for n in range(1000):
+        mcn(40000)
+    en = time.time()
+    print(f"Monte Carlo Numba time: {en - st}")
+    
 
 
 if __name__ == "__main__":

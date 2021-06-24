@@ -1,4 +1,6 @@
-# bisection algorithms to find roots
+# bisection algorithms to find roots, monte carlo integration
+import random
+import math
 from numba import jit
 import pdb
 
@@ -110,3 +112,16 @@ def bisection_python_numba(left, right, epsilon, max_iter=50):
         if abs(dx) < epsilon or fmid == 0.0:
             return rtb
     raise Exception("To many interations")
+
+@jit(nopython=True)
+def monte_carlo_integral_numba(ntry):
+    left = 0
+    right = 5
+    s_sum = 0
+    range_int = right - left
+    rand_sample = 0
+    for n in range(ntry):
+        rand_sample = random.uniform(0, 1)
+        rand_sample = left + range_int * rand_sample
+        s_sum += (math.e ** (-rand_sample)) / (1 + (rand_sample - 1) * (rand_sample - 1))
+    return range_int * s_sum / ntry
